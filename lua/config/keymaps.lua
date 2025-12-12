@@ -1,7 +1,4 @@
--- Keymaps are automatically loaded on the VeryLazy event
--- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
--- Add any additional keymaps here
--- neotest
+-- Neotest
 vim.keymap.set("n", "<leader>tn", function()
   require("neotest").run.run(vim.fn.expand("%"))
 end, { desc = "Run test file (neotest)" })
@@ -20,3 +17,28 @@ end, { desc = "Debug test file (neotest)" })
 vim.keymap.set("n", "<leader>td", function()
   require("neotest").run.run({ vim.fn.expand("%"), suite = false, strategy = "dap" })
 end, { desc = "Debug nearest test (neotest)" })
+
+-- Opencode
+vim.keymap.set({ "n", "x" }, "<leader>aoa", function()
+  require("opencode").ask("@this: ", { submit = true })
+end, { desc = "Ask opencode" })
+vim.keymap.set({ "n", "x" }, "<leader>aox", function()
+  require("opencode").select()
+end, { desc = "Execute opencode action…" })
+vim.keymap.set({ "n", "x" }, "<leader>aog", function()
+  require("opencode").prompt("@this")
+end, { desc = "Add to opencode" })
+vim.keymap.set({ "n", "t" }, "<leader>aoo", function()
+  require("opencode").toggle()
+end, { desc = "Toggle opencode" })
+vim.keymap.set("n", "<leader>aok", function()
+  require("opencode").command("session.half.page.up")
+end, { desc = "opencode half page up" })
+vim.keymap.set("n", "<leader>aoj", function()
+  require("opencode").command("session.half.page.down")
+end, { desc = "opencode half page down" })
+
+-- Snacks
+vim.keymap.set("n", "<leader>ss", function()
+  require("snacks").picker.grep_word()
+end, { desc = "Grep word under cursor" })
