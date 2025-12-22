@@ -1,14 +1,18 @@
 return {
   {
-    "mfussenegger/nvim-jdtls",
-    ft = "java",
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        zls = {},
+      },
+    },
   },
 
   {
     "mason-org/mason.nvim",
     opts = {
       ensure_installed = {
-        "jdtls",
+        "zls",
       },
     },
   },

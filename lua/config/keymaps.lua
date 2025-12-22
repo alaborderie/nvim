@@ -92,6 +92,43 @@ map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
 -- new file
 map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New File" })
 
+-- Snacks picker
+map("n", "<leader>,", function() Snacks.picker.buffers() end, { desc = "Buffers" })
+map("n", "<leader>/", function() Snacks.picker.grep({ cwd = utils.get_git_root() }) end, { desc = "Grep (Root Dir)" })
+map("n", "<leader>:", function() Snacks.picker.command_history() end, { desc = "Command History" })
+map("n", "<leader><space>", function() Snacks.picker.files({ cwd = utils.get_git_root() }) end, { desc = "Find Files (Root Dir)" })
+map("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
+map("n", "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, { desc = "Find Config File" })
+map("n", "<leader>ff", function() Snacks.picker.files({ cwd = utils.get_git_root() }) end, { desc = "Find Files (Root Dir)" })
+map("n", "<leader>fF", function() Snacks.picker.files() end, { desc = "Find Files (cwd)" })
+map("n", "<leader>fg", function() Snacks.picker.git_files() end, { desc = "Find Files (git-files)" })
+map("n", "<leader>fr", function() Snacks.picker.recent({ cwd = utils.get_git_root() }) end, { desc = "Recent (Root Dir)" })
+map("n", "<leader>fR", function() Snacks.picker.recent() end, { desc = "Recent" })
+map("n", "<leader>fp", function() Snacks.picker.projects() end, { desc = "Projects" })
+map("n", "<leader>sg", function() Snacks.picker.grep({ cwd = utils.get_git_root() }) end, { desc = "Grep (Root Dir)" })
+map("n", "<leader>sG", function() Snacks.picker.grep() end, { desc = "Grep (cwd)" })
+map("n", "<leader>sw", function() Snacks.picker.grep_word({ cwd = utils.get_git_root() }) end, { desc = "Word (Root Dir)" })
+map("n", "<leader>sW", function() Snacks.picker.grep_word() end, { desc = "Word (cwd)" })
+map("x", "<leader>sw", function() Snacks.picker.grep_word({ cwd = utils.get_git_root() }) end, { desc = "Selection (Root Dir)" })
+map("x", "<leader>sW", function() Snacks.picker.grep_word() end, { desc = "Selection (cwd)" })
+map("n", "<leader>sb", function() Snacks.picker.lines() end, { desc = "Buffer Lines" })
+map("n", "<leader>sB", function() Snacks.picker.grep_buffers() end, { desc = "Grep Open Buffers" })
+map("n", "<leader>sd", function() Snacks.picker.diagnostics() end, { desc = "Diagnostics" })
+map("n", "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, { desc = "Buffer Diagnostics" })
+map("n", "<leader>sh", function() Snacks.picker.help() end, { desc = "Help Pages" })
+map("n", "<leader>sH", function() Snacks.picker.highlights() end, { desc = "Highlights" })
+map("n", "<leader>si", function() Snacks.picker.icons() end, { desc = "Icons" })
+map("n", "<leader>sj", function() Snacks.picker.jumps() end, { desc = "Jumps" })
+map("n", "<leader>sk", function() Snacks.picker.keymaps() end, { desc = "Keymaps" })
+map("n", "<leader>sl", function() Snacks.picker.loclist() end, { desc = "Location List" })
+map("n", "<leader>sM", function() Snacks.picker.man() end, { desc = "Man Pages" })
+map("n", "<leader>sm", function() Snacks.picker.marks() end, { desc = "Marks" })
+map("n", "<leader>sR", function() Snacks.picker.resume() end, { desc = "Resume" })
+map("n", "<leader>sq", function() Snacks.picker.qflist() end, { desc = "Quickfix List" })
+map("n", "<leader>ss", function() Snacks.picker.lsp_symbols() end, { desc = "LSP Symbols" })
+map("n", "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, { desc = "LSP Workspace Symbols" })
+map("n", "<leader>uC", function() Snacks.picker.colorschemes() end, { desc = "Colorschemes" })
+
 -- location list
 map("n", "<leader>xl", function()
   local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
@@ -207,8 +244,14 @@ map("n", "<leader><tab>]", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 map("n", "<leader><tab>d", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 map("n", "<leader><tab>[", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
 
--- lua
-map({"n", "x"}, "<localleader>r", function() Snacks.debug.run() end, { desc = "Run Lua", ft = "lua" })
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "lua",
+	callback = function()
+		vim.keymap.set({ "n", "x" }, "<localleader>r", function()
+			Snacks.debug.run()
+		end, { buffer = true, desc = "Run Lua" })
+	end,
+})
 
 -- neotest
 vim.keymap.set("n", "<leader>tt", function()

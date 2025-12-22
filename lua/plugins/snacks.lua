@@ -13,10 +13,10 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      -- Enable the features you're using in your keymaps
       bigfile = { enabled = true },
       bufdelete = { enabled = true },
       debug = { enabled = true },
+      explorer = { enabled = true },
       gitbrowse = { enabled = true },
       lazygit = { enabled = true },
       notifier = { enabled = true },
@@ -39,17 +39,30 @@ return {
       dim = { enabled = true },
       animate = { enabled = true },
       profiler = { enabled = true },
-      profiler_highlights = { enabled = true },
       dashboard = { enabled = true },
       statuscolumn = { enabled = false },
       words = { enabled = true },
       styles = {
         notification = {
-          wo = { wrap = true }, -- Wrap notifications
+          wo = { wrap = true },
         },
       },
     },
     keys = {
+      {
+        "<leader>e",
+        function()
+          Snacks.explorer()
+        end,
+        desc = "File Explorer",
+      },
+      {
+        "<leader>E",
+        function()
+          Snacks.explorer.open({ cwd = vim.fn.getcwd() })
+        end,
+        desc = "File Explorer (cwd)",
+      },
       {
         "<leader>.",
         function()
@@ -73,10 +86,10 @@ return {
       },
     },
     init = function()
+      _G.Snacks = require("snacks")
       vim.api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
         callback = function()
-          -- Setup some globals for easier access
           _G.Snacks = require("snacks")
         end,
       })
